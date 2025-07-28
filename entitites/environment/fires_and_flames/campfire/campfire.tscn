@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdttkm0rqhdyo"]
+
+[ext_resource type="PackedScene" uid="uid://dyven6kg2kjny" path="res://resources/environment/fires_and_flames/campfire/assets/campfire_logs.glb" id="1_ys7tt"]
+[ext_resource type="PackedScene" uid="uid://lvng10lrceg" path="res://resources/environment/fires_and_flames/flames.tscn" id="2_si33i"]
+
+[node name="Campfire" instance=ExtResource("1_ys7tt")]
+
+[node name="Flames" parent="." index="1" instance=ExtResource("2_si33i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.209216, 0)

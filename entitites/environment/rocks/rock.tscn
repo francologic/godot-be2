@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtpycssaeo0rd"]
+
+[ext_resource type="PackedScene" uid="uid://42n8sqgyjddi" path="res://resources/environment/rocks/assets/rock.glb" id="1_wsmq7"]
+
+[node name="Rock" instance=ExtResource("1_wsmq7")]

@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://b5dbdj7a01rnh"]
+
+[ext_resource type="Script" uid="uid://drm6cov5v58q7" path="res://entitites/characters/player/player_controller.gd" id="1_o0ypg"]
+[ext_resource type="PackedScene" uid="uid://c8mf4gchguc7k" path="res://utilities/components/camera_component/camera_component.tscn" id="1_urf00"]
+[ext_resource type="Script" uid="uid://dekkkla7o5p62" path="res://utilities/components/mouse_capture_component/mouse_capture_component.gd" id="2_o0ypg"]
+[ext_resource type="Script" uid="uid://dbdibww2d0kix" path="res://utilities/components/input_component/input_component.gd" id="3_kl37f"]
+[ext_resource type="Script" uid="uid://hmlskf4frvb5" path="res://utilities/components/gamepad_capture_component/gamepad_capture_component.gd" id="4_3fpg0"]
+[ext_resource type="Script" uid="uid://bxdb83g10x6r0" path="res://utilities/components/keyboard_capture_component/keyboard_capture_component.gd" id="5_tm6kh"]
+[ext_resource type="Script" uid="uid://dmgpavyswfs76" path="res://utilities/components/velocity_component/velocity_component.gd" id="7_3fpg0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d271q"]
+
+[node name="PlayerController" type="CharacterBody3D" node_paths=PackedStringArray("velocity_component", "input_component")]
+script = ExtResource("1_o0ypg")
+velocity_component = NodePath("VelocityComponent")
+input_component = NodePath("InputComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_d271q")
+
+[node name="CameraComponent" parent="." node_paths=PackedStringArray("input", "player") instance=ExtResource("1_urf00")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+input = NodePath("../InputComponent")
+player = NodePath("..")
+
+[node name="InputComponent" type="Node" parent="." node_paths=PackedStringArray("component_mouse_capture", "component_gamepad_capture", "component_keyboard_capture")]
+script = ExtResource("3_kl37f")
+component_mouse_capture = NodePath("MouseCaptureComponent")
+component_gamepad_capture = NodePath("GamepadCaptureComponent")
+component_keyboard_capture = NodePath("KeyboardCaptureComponent")
+metadata/_custom_type_script = "uid://dbdibww2d0kix"
+
+[node name="GamepadCaptureComponent" type="Node" parent="InputComponent"]
+script = ExtResource("4_3fpg0")
+metadata/_custom_type_script = "uid://hmlskf4frvb5"
+
+[node name="KeyboardCaptureComponent" type="Node" parent="InputComponent"]
+script = ExtResource("5_tm6kh")
+metadata/_custom_type_script = "uid://bxdb83g10x6r0"
+
+[node name="MouseCaptureComponent" type="Node" parent="InputComponent"]
+script = ExtResource("2_o0ypg")
+metadata/_custom_type_script = "uid://dekkkla7o5p62"
+
+[node name="VelocityComponent" type="Node" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("7_3fpg0")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://dmgpavyswfs76"

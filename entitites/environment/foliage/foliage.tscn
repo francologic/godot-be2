@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=4 uid="uid://qvm63psxd1b4"]
+
+[ext_resource type="PackedScene" uid="uid://di0vtjdjiqlws" path="res://resources/environment/foliage/assets/foliage.glb" id="1_lag2c"]
+[ext_resource type="Shader" uid="uid://ct654q4a8bd0d" path="res://resources/environment/foliage/assets/foliage_material.gdshader" id="2_gwjid"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vsuvj"]
+frequency = 0.0005
+fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5c7yo"]
+seamless = true
+seamless_blend_skirt = 1.0
+noise = SubResource("FastNoiseLite_vsuvj")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7yo7h"]
+load_path = "res://.godot/imported/foliage_grass_bush.png-a369fef9595aed7d75fead51d12e9984.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6beno"]
+resource_name = "MaterialFoliage"
+render_priority = 0
+shader = ExtResource("2_gwjid")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = SubResource("CompressedTexture2D_7yo7h")
+shader_parameter/albedo_texture_size = Vector2i(64, 64)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_5c7yo")
+shader_parameter/wind_speed = 0.1
+shader_parameter/wind_strength = 0.2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_3rsgx"]
+_surfaces = [{
+"aabb": AABB(-0.5, 9.55343e-16, -0.433013, 1, 1, 0.866025),
+"format": 34896613377,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
+"name": "MaterialFoliage",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("/78AAAAAAAD/P/////8AAP8/AAD//wAA/7///wAAAAAAAAAA/38AAP//////fwAA//8AAP9/AAAAAP///38AAP+/AAD//wAA/z///wAAAAD/PwAAAAAAAP+//////wAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_83n71"]
+resource_name = "foliage_Plane_002"
+_surfaces = [{
+"aabb": AABB(-0.5, 9.55343e-16, -0.433013, 1, 1, 0.866025),
+"attribute_data": PackedByteArray("AAD/////AAD/////AAAAAAAA/////wAA/////wAAAAAAAP////8AAP////8AAAAA"),
+"format": 34896613399,
+"index_count": 18,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkA"),
+"material": SubResource("ShaderMaterial_6beno"),
+"name": "MaterialFoliage",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 12,
+"vertex_data": PackedByteArray("/78AAAAAVNX/P/////9U1f8/AAD//1TV/7///wAAVNUAAAAA/38AgP//////fwCA//8AAP9/AIAAAP///38AgP+/AAD//1TV/z///wAAVNX/PwAAAABU1f+//////1TV/3////9/////f////3////9/////f////3////9/////fwAA/38AAP9/AAD/fwAA")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_3rsgx")
+
+[node name="Foliage" instance=ExtResource("1_lag2c")]
+
+[node name="foliage" parent="." index="0"]
+mesh = SubResource("ArrayMesh_83n71")

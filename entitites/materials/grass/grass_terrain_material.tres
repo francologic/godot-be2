@@ -1,0 +1,13 @@
+[gd_resource type="Terrain3DTextureAsset" load_steps=3 format=3 uid="uid://doaj5djcfr6dh"]
+
+[ext_resource type="Texture2D" uid="uid://cwn5mh3tyq0xs" path="res://resources/materials/grass/assets/grass_terrain.png" id="1_2g5wn"]
+[ext_resource type="Texture2D" uid="uid://d3lx4nthvh3ye" path="res://resources/materials/grass/assets/grass_terrain_n.png" id="2_y013o"]
+
+[resource]
+name = "grass_terrain"
+albedo_texture = ExtResource("1_2g5wn")
+normal_texture = ExtResource("2_y013o")
+roughness = 0.865
+uv_scale = 2.0
+detiling_rotation = 0.3
+detiling_shift = 0.3

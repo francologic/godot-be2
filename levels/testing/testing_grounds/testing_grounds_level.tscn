@@ -1,0 +1,149 @@
+[gd_scene load_steps=24 format=3 uid="uid://dh6csoipav01j"]
+
+[ext_resource type="Terrain3DTextureAsset" uid="uid://doaj5djcfr6dh" path="res://entitites/materials/grass/grass_terrain_material.tres" id="1_qhkfb"]
+[ext_resource type="PackedScene" uid="uid://q76hof2i7cjl" path="res://entitites/environment/trees/pine_tree/pine_tree.tscn" id="1_v6yn5"]
+[ext_resource type="PackedScene" uid="uid://qvm63psxd1b4" path="res://entitites/environment/foliage/foliage.tscn" id="2_dm8xj"]
+[ext_resource type="Terrain3DTextureAsset" uid="uid://3frru3ogps77" path="res://entitites/materials/dirt/dirt_terrain_material.tres" id="2_twj0a"]
+[ext_resource type="Terrain3DTextureAsset" uid="uid://os7hbnkmrgth" path="res://entitites/materials/rock/rock_terrain_texture.tres" id="3_ajnxt"]
+[ext_resource type="Script" uid="uid://dbndw8p05yam7" path="res://addons/terrain_3d/utils/terrain_3d_objects.gd" id="4_6dg1a"]
+[ext_resource type="PackedScene" uid="uid://bdttkm0rqhdyo" path="res://entitites/environment/fires_and_flames/campfire/campfire.tscn" id="7_jvspr"]
+[ext_resource type="Shader" uid="uid://bt1aimtbychpn" path="res://entitites/materials/water/water_material.gdshader" id="8_0cvwy"]
+[ext_resource type="PackedScene" uid="uid://b5dbdj7a01rnh" path="res://entitites/characters/player/player_character.tscn" id="9_dm8xj"]
+
+[sub_resource type="Gradient" id="Gradient_v6yn5"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dm8xj"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jvspr"]
+seamless = true
+color_ramp = SubResource("Gradient_v6yn5")
+noise = SubResource("FastNoiseLite_dm8xj")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_0cvwy"]
+_shader_parameters = {
+&"bias_distance": 512.0,
+&"blend_sharpness": 0.5,
+&"depth_blur": 0.0,
+&"enable_macro_variation": true,
+&"enable_projection": true,
+&"flat_terrain_normals": false,
+&"macro_variation1": Color(1, 1, 1, 1),
+&"macro_variation2": Color(1, 1, 1, 1),
+&"macro_variation_slope": 0.333,
+&"mipmap_bias": 1.0,
+&"noise1_angle": 0.0,
+&"noise1_offset": Vector2(0.5, 0.5),
+&"noise1_scale": 0.04,
+&"noise2_scale": 0.076,
+&"noise_texture": SubResource("NoiseTexture2D_jvspr"),
+&"projection_threshold": 0.8
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ldyiq"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_jgvci"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_ldyiq")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_qunu6"]
+name = "pine_tree"
+id = 1
+scene_file = ExtResource("1_v6yn5")
+density = 0.0268965
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_txne6"]
+name = "foliage"
+id = 2
+scene_file = ExtResource("2_dm8xj")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DAssets" id="Terrain3DAssets_qunu6"]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_jgvci"), SubResource("Terrain3DMeshAsset_qunu6"), SubResource("Terrain3DMeshAsset_txne6")])
+texture_list = Array[Terrain3DTextureAsset]([ExtResource("1_qhkfb"), ExtResource("2_twj0a"), ExtResource("3_ajnxt")])
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ulr6e"]
+noise_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t1t0h"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_ulr6e")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wh833"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_ulr6e")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dbrgr"]
+render_priority = 0
+shader = ExtResource("8_0cvwy")
+shader_parameter/primary_color = Color(0.027451, 0.262745, 0.34902, 0.827451)
+shader_parameter/roughness = 0.2
+shader_parameter/normalmap_a = SubResource("NoiseTexture2D_t1t0h")
+shader_parameter/normalmap_b = SubResource("NoiseTexture2D_wh833")
+shader_parameter/normalmap_a_strength = 0.3
+shader_parameter/normalmap_b_strength = 0.4
+shader_parameter/movement_direction = Vector2(0.1, 0.1)
+shader_parameter/movement_strenght = 0.2
+shader_parameter/uv_scale = 1.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ysi6y"]
+material = SubResource("ShaderMaterial_dbrgr")
+
+[node name="TestingGroundsLevel" type="Node"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="Ground" type="Terrain3D" parent="Environment"]
+data_directory = "res://levels/testing/testing_grounds/terrain"
+material = SubResource("Terrain3DMaterial_0cvwy")
+assets = SubResource("Terrain3DAssets_qunu6")
+top_level = true
+metadata/_edit_lock_ = true
+
+[node name="Props" type="Node3D" parent="Environment"]
+script = ExtResource("4_6dg1a")
+metadata/_custom_type_script = "uid://dbndw8p05yam7"
+
+[node name="Campfire" parent="Environment/Props" instance=ExtResource("7_jvspr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.9102, -0.0099771, 31.8363)
+
+[node name="Lake" type="Node3D" parent="Environment/Props"]
+script = ExtResource("4_6dg1a")
+metadata/_custom_type_script = "uid://dbndw8p05yam7"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Props/Lake"]
+transform = Transform3D(16.0917, 0, 0, 0, 1.00094, 0, 0, 0, 9.53986, 24.9075, -0.957139, 44.5926)
+mesh = SubResource("PlaneMesh_ysi6y")
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("9_dm8xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.67657, 32)

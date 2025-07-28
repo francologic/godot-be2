@@ -1,0 +1,14 @@
+[gd_resource type="Terrain3DTextureAsset" load_steps=3 format=3 uid="uid://os7hbnkmrgth"]
+
+[ext_resource type="Texture2D" uid="uid://b2ny7wn8ogcu1" path="res://resources/materials/rock/assets/rock_terrain.png" id="1_6rstg"]
+[ext_resource type="Texture2D" uid="uid://dv7vud2kr5oad" path="res://resources/materials/rock/assets/rock_terrain_n.png" id="2_e2htb"]
+
+[resource]
+name = "rock_terrain"
+id = 2
+albedo_texture = ExtResource("1_6rstg")
+normal_texture = ExtResource("2_e2htb")
+roughness = 1.0
+uv_scale = 2.0
+detiling_rotation = 0.3
+detiling_shift = 0.3

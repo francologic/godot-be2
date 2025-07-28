@@ -1,0 +1,14 @@
+[gd_resource type="Terrain3DTextureAsset" load_steps=3 format=3 uid="uid://3frru3ogps77"]
+
+[ext_resource type="Texture2D" uid="uid://c48eanncrk321" path="res://resources/materials/dirt/assets/dirt_terrain.png" id="1_myt50"]
+[ext_resource type="Texture2D" uid="uid://b3ckr3p02waqo" path="res://resources/materials/dirt/assets/dirt_terrain_n.png" id="2_i45se"]
+
+[resource]
+name = "dirt_terrain"
+id = 1
+albedo_texture = ExtResource("1_myt50")
+normal_texture = ExtResource("2_i45se")
+roughness = 1.0
+uv_scale = 2.0
+detiling_rotation = 0.3
+detiling_shift = 0.3
