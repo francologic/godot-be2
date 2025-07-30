@@ -6,9 +6,7 @@ extends CharacterBody3D
 
 
 func _process(delta: float) -> void:
-	print(input_component._movement)
 	velocity_component._movement_input = input_component._movement
-	
 	
 func update_rotation(rotation_input) -> void:
 	global_transform.basis = Basis.from_euler(rotation_input)

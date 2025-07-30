@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b5dbdj7a01rnh"]
+[gd_scene load_steps=15 format=3 uid="uid://b5dbdj7a01rnh"]
 
 [ext_resource type="Script" uid="uid://drm6cov5v58q7" path="res://entitites/characters/player/player_controller.gd" id="1_o0ypg"]
 [ext_resource type="PackedScene" uid="uid://c8mf4gchguc7k" path="res://utilities/components/camera_component/camera_component.tscn" id="1_urf00"]
@@ -7,6 +7,12 @@
 [ext_resource type="Script" uid="uid://hmlskf4frvb5" path="res://utilities/components/gamepad_capture_component/gamepad_capture_component.gd" id="4_3fpg0"]
 [ext_resource type="Script" uid="uid://bxdb83g10x6r0" path="res://utilities/components/keyboard_capture_component/keyboard_capture_component.gd" id="5_tm6kh"]
 [ext_resource type="Script" uid="uid://dmgpavyswfs76" path="res://utilities/components/velocity_component/velocity_component.gd" id="7_3fpg0"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="8_j62ud"]
+[ext_resource type="Script" uid="uid://cp6xwp1511nem" path="res://entitites/characters/player/player_state_machine.gd" id="9_q8ui6"]
+[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="9_yeoll"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="10_q8ui6"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="11_o2ofj"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="12_yeoll"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d271q"]
 
@@ -18,10 +24,21 @@ input_component = NodePath("InputComponent")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_d271q")
 
-[node name="CameraComponent" parent="." node_paths=PackedStringArray("input", "player") instance=ExtResource("1_urf00")]
+[node name="Camera" type="Node3D" parent="."]
+
+[node name="CameraComponent" parent="Camera" node_paths=PackedStringArray("camera_controller_anchor", "input", "player") instance=ExtResource("1_urf00")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-input = NodePath("../InputComponent")
-player = NodePath("..")
+camera_controller_anchor = NodePath("../CameraPositionMarker")
+input = NodePath("../../InputComponent")
+player = NodePath("../..")
+
+[node name="CameraPositionMarker" type="Marker3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="VelocityComponent" type="Node" parent="." node_paths=PackedStringArray("character")]
+script = ExtResource("7_3fpg0")
+character = NodePath("..")
+metadata/_custom_type_script = "uid://dmgpavyswfs76"
 
 [node name="InputComponent" type="Node" parent="." node_paths=PackedStringArray("component_mouse_capture", "component_gamepad_capture", "component_keyboard_capture")]
 script = ExtResource("3_kl37f")
@@ -42,7 +59,69 @@ metadata/_custom_type_script = "uid://bxdb83g10x6r0"
 script = ExtResource("2_o0ypg")
 metadata/_custom_type_script = "uid://dekkkla7o5p62"
 
-[node name="VelocityComponent" type="Node" parent="." node_paths=PackedStringArray("character")]
-script = ExtResource("7_3fpg0")
-character = NodePath("..")
-metadata/_custom_type_script = "uid://dmgpavyswfs76"
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource("8_j62ud")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="PlayerStateMachine" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_q8ui6")
+
+[node name="Root" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_yeoll")
+metadata/_custom_type_script = "uid://c1vp0ojjvaby1"
+
+[node name="Movement" type="Node" parent="PlayerStateMachine/Root"]
+script = ExtResource("10_q8ui6")
+initial_state = NodePath("Grounded")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Grounded" type="Node" parent="PlayerStateMachine/Root/Movement"]
+script = ExtResource("10_q8ui6")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Idle" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded"]
+script = ExtResource("11_o2ofj")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="OnMoving" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Idle"]
+script = ExtResource("12_yeoll")
+to = NodePath("../../Moving")
+event = &"onMoving"
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Moving" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded"]
+script = ExtResource("10_q8ui6")
+initial_state = NodePath("Walking")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Walking" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Moving"]
+script = ExtResource("11_o2ofj")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Sprinting" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Moving"]
+script = ExtResource("11_o2ofj")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="OnIdle" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Moving"]
+script = ExtResource("12_yeoll")
+to = NodePath("../../Idle")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="OnWalking" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Moving"]
+script = ExtResource("12_yeoll")
+to = NodePath("../Walking")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="OnSprinting" type="Node" parent="PlayerStateMachine/Root/Movement/Grounded/Moving"]
+script = ExtResource("12_yeoll")
+to = NodePath("../Sprinting")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Airborne" type="Node" parent="PlayerStateMachine/Root/Movement"]
+script = ExtResource("10_q8ui6")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"

@@ -20,7 +20,7 @@ Console="*res://addons/console/console.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/console/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/console/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [file_customization]
 
@@ -76,3 +76,8 @@ move_back={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":1,"axis_value":1.0,"script":null)
 ]
 }
+
+[physics]
+
+common/physics_jitter_fix=0.0
+common/physics_interpolation=true

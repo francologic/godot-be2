@@ -17,6 +17,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventJoypadMotion :
 		INPUT_SCHEME = INPUT_SCHEMES.GAMEPAD
 		_camera_rotation = component_gamepad_capture._right_axis_input
+		_movement = component_gamepad_capture._movement_axis
 	if event is InputEventMouse :
 		INPUT_SCHEME = INPUT_SCHEMES.KEYBOARD_AND_MOUSE
 		_camera_rotation = component_mouse_capture._mouse_input

@@ -3,6 +3,9 @@ class_name CameraComponent
 extends Node3D
 
 @export_category("Reference")
+## We set an achor and then interpolate the camera position using physics interpolation in the engine. 
+## This is needed so it updates camera position every frame instead of every physics tick.
+@export var camera_controller_anchor : Marker3D
 @export var input : InputComponent
 @export var player : PlayerController
 
@@ -12,6 +15,7 @@ extends Node3D
 @export_range(60,-90) var tilt_upper_limit : int = 90
 
 var _rotation : Vector3
+
 func _process(delta: float) -> void:
 	update_camera_rotation(input._camera_rotation)
 
@@ -23,7 +27,9 @@ func update_camera_rotation(input: Vector2) -> void:
 	var _player_rotation = Vector3(0.0, _rotation.y, 0.0)
 	var _camera_rotation = Vector3( _rotation.x, 0.0, 0.0)
 
-	transform.basis = Basis.from_euler(_camera_rotation)
+	camera_controller_anchor.transform.basis = Basis.from_euler(_camera_rotation)
 	player.update_rotation(_player_rotation)
+	
+	global_transform = camera_controller_anchor.get_global_transform_interpolated()
 
 	rotation.z = 0.0
