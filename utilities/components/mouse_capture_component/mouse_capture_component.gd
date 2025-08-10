@@ -16,7 +16,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _ready() -> void:
 	Input.mouse_mode = current_mouse_mode
-	
-func _process(delta: float) -> void: 
+
+func _process(delta: float) -> void:
 	#Cleans mouse input so it does not keep increasing sensitivity
 	_mouse_input = Vector2.ZERO
