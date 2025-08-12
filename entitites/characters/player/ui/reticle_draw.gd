@@ -1,6 +1,8 @@
 @tool
 extends Control
 
+@export var velocity_component : VelocityComponent
+
 @export_category("General Reticle Settings")
 @export var reticle_color: Color  = Color.WHITE : set = set_reticle_color
 @export var reticle_width: float = 1.0 : set = set_reticle_width
