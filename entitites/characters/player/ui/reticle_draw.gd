@@ -10,7 +10,8 @@ extends Control
 	set = set_reticle_width
 
 @export_category("Center Reticle")
-@export var dot_radius: float = 1.0
+@export var dot_radius: float = 1.0:
+	set = set_dot_radius
 
 @export_category("Left Line")
 @export var left_reticle_starting_point: Vector2 = Vector2(-30, 0):
@@ -55,7 +56,7 @@ func update_crosshair():
 	queue_redraw()
 
 
-#-----------Setters-----------
+#Setters
 func set_reticle_color(new_reticle_color):
 	reticle_color = new_reticle_color
 	update_crosshair()
@@ -63,6 +64,11 @@ func set_reticle_color(new_reticle_color):
 
 func set_reticle_width(new_reticle_width):
 	reticle_width = new_reticle_width
+	update_crosshair()
+
+
+func set_dot_radius(new_set_dot_radius):
+	dot_radius = new_set_dot_radius
 	update_crosshair()
 
 
