@@ -1,6 +1,7 @@
 @tool
 extends Control
 
+@export_category("References")
 @export var velocity_component: VelocityComponent
 
 @export_category("General Reticle Settings")
