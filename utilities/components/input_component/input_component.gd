@@ -4,22 +4,23 @@ class_name InputComponent
 extends Node
 
 @export_category("Input References")
-@export var component_mouse_capture : MouseCaptureComponent
-@export var component_gamepad_capture : GamepadCaptureComponent
-@export var component_keyboard_capture : KeyboardCaptureComponent
+@export var component_mouse_capture: MouseCaptureComponent
+@export var component_gamepad_capture: GamepadCaptureComponent
+@export var component_keyboard_capture: KeyboardCaptureComponent
 
-enum INPUT_SCHEMES { KEYBOARD_AND_MOUSE, GAMEPAD}
+enum INPUT_SCHEMES { KEYBOARD_AND_MOUSE, GAMEPAD }
 static var INPUT_SCHEME: INPUT_SCHEMES = INPUT_SCHEMES.KEYBOARD_AND_MOUSE
 
-var _camera_rotation : Vector2
-var _movement : Vector2
-var _sprinting : bool
-var _crouching : bool
-var _jumping : bool
+var _camera_rotation: Vector2
+var _movement: Vector2
+var _sprinting: bool
+var _crouching: bool
+var _jumping: bool
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	#Gamepad
-	if event is InputEventJoypadMotion :
+	if event is InputEventJoypadMotion:
 		INPUT_SCHEME = INPUT_SCHEMES.GAMEPAD
 		_camera_rotation = component_gamepad_capture._right_axis_input
 		_movement = component_gamepad_capture._movement_axis
@@ -28,20 +29,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		_jumping = component_gamepad_capture._jumping
 
 	#Keyboard and Mouse
-	if event is InputEventMouse :
+	if event is InputEventMouse:
 		INPUT_SCHEME = INPUT_SCHEMES.KEYBOARD_AND_MOUSE
 		_camera_rotation = component_mouse_capture._mouse_input
-	if event is InputEventKey :
+	if event is InputEventKey:
 		INPUT_SCHEME = INPUT_SCHEMES.KEYBOARD_AND_MOUSE
 		_movement = component_keyboard_capture._movement_axis
 		_sprinting = component_keyboard_capture._sprinting
 		_crouching = component_keyboard_capture._crouching
 		_jumping = component_keyboard_capture._jumping
 
+
 func _process(delta: float) -> void:
 	#Cleans current rotation so mouse does not keep increasing sensitivity. There is no need to do that on Joypad as it just use current position.
-	if INPUT_SCHEME == INPUT_SCHEMES.KEYBOARD_AND_MOUSE :
+	if INPUT_SCHEME == INPUT_SCHEMES.KEYBOARD_AND_MOUSE:
 		_camera_rotation = Vector2.ZERO
+
 
 func _get_configuration_warnings():
 	if !component_mouse_capture:
