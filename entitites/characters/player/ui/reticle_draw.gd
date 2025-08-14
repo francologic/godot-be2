@@ -2,7 +2,7 @@
 extends Control
 
 @export_category("References")
-@export var velocity_component: VelocityComponent
+@export var player_controller: PlayerController
 
 @export_category("General Reticle Settings")
 @export var reticle_color: Color = Color.WHITE:
@@ -17,14 +17,81 @@ extends Control
 @export_category("Left Line")
 @export var left_reticle_starting_point: Vector2 = Vector2(-30, 0):
 	set = set_left_reticle_starting_point
+var left_reticle_starting_point_origin: Vector2
 @export var left_reticle_finishing_point: Vector2 = Vector2(-15, 0):
 	set = set_left_reticle_finishing_point
+var left_reticle_finishing_point_origin: Vector2
 
 @export_category("Right Line")
 @export var right_reticle_starting_point: Vector2 = Vector2(30, 0):
 	set = set_right_reticle_starting_point
+var right_reticle_starting_point_origin: Vector2
 @export var right_reticle_finishing_point: Vector2 = Vector2(15, 0):
 	set = set_right_reticle_finishing_point
+var right_reticle_finishing_point_origin: Vector2
+
+@export_category("Reticle Animation")
+@export var reticle_moving_speed: float = 0.25
+@export var reticle_moving_distance: float = 1
+
+
+func _ready() -> void:
+	left_reticle_starting_point_origin = left_reticle_starting_point
+	left_reticle_finishing_point_origin = left_reticle_finishing_point
+	right_reticle_starting_point_origin = right_reticle_starting_point
+	right_reticle_finishing_point_origin = right_reticle_finishing_point
+
+
+func _process(delta: float) -> void:
+	reticle_anim()
+	pass
+
+
+#Animates reticle while moving
+func reticle_anim():
+	var vel = player_controller.get_real_velocity()
+	var speed = Vector3(0, 0, 0).distance_to(vel)
+
+	if vel.length() > 0:
+		#Moves reticle
+		left_reticle_starting_point = lerp(
+			left_reticle_starting_point,
+			left_reticle_starting_point_origin + Vector2(speed * -reticle_moving_distance, 0),
+			reticle_moving_speed
+		)
+		left_reticle_finishing_point = lerp(
+			left_reticle_finishing_point,
+			left_reticle_finishing_point_origin + Vector2(speed * -reticle_moving_distance, 0),
+			reticle_moving_speed
+		)
+		right_reticle_starting_point = lerp(
+			right_reticle_starting_point,
+			right_reticle_starting_point_origin + Vector2(speed * reticle_moving_distance, 0),
+			reticle_moving_speed
+		)
+		right_reticle_finishing_point = lerp(
+			right_reticle_finishing_point,
+			right_reticle_finishing_point_origin + Vector2(speed * reticle_moving_distance, 0),
+			reticle_moving_speed
+		)
+	else:
+		#Returns reticle to origin
+		left_reticle_starting_point = lerp(
+			left_reticle_starting_point, left_reticle_starting_point_origin, reticle_moving_speed
+		)
+		left_reticle_finishing_point = lerp(
+			left_reticle_finishing_point, left_reticle_finishing_point_origin, reticle_moving_speed
+		)
+		right_reticle_starting_point = lerp(
+			right_reticle_starting_point, right_reticle_starting_point_origin, reticle_moving_speed
+		)
+		right_reticle_finishing_point = lerp(
+			right_reticle_finishing_point,
+			right_reticle_finishing_point_origin,
+			reticle_moving_speed
+		)
+
+	update_crosshair()
 
 
 func _draw() -> void:

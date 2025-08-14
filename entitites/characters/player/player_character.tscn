@@ -229,8 +229,8 @@ initial_node_to_watch = NodePath("../PlayerStateMachine")
 
 [node name="Reticle" parent="." instance=ExtResource("22_0x1c0")]
 
-[node name="ReticleDraw" parent="Reticle" index="0" node_paths=PackedStringArray("velocity_component")]
-velocity_component = NodePath("../../VelocityComponent")
+[node name="ReticleDraw" parent="Reticle" index="0" node_paths=PackedStringArray("player_controller")]
+player_controller = NodePath("../..")
 
 [connection signal="state_physics_processing" from="PlayerStateMachine/Root/Movement/Grounded" to="PlayerState/MovementState/GroundedState" method="_on_grounded_state_physics_processing"]
 [connection signal="state_processing" from="PlayerStateMachine/Root/Movement/Grounded/Idle" to="PlayerState/MovementState/GroundedState/IdleState" method="_on_idle_state_processing"]
